@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var num=1
+        function dosome(){
+            console.info("按钮被点击了"+num++ +"次,顺带发送了ajax请求");
+        }
+        const debounce=function(fn,delay){
+            let timer=null
+            return function(){
+                timer && clearTimeout(timer)
+                timer = setTimeout(fn,delay)
+            }
+        }
+        const throttle = function(fn,delay){
+            let timer = null
+            return function(){
+                if(!timer){
+                    timer = setTimeout(() => {
+                       fn()
+                       timer = null 
+                    }, delay)
+                }
+            }
+        }
+        const handlerThrottle = throttle(dosome,1000)
+        const handlerClick=debounce(dosome,1000)
+        window.addEventListener("resize",handlerThrottle)
+    </script>
+</head>
+<body>
+    <button onclick="handlerThrottle()">点我试试</button>
+</body>
+</html>
